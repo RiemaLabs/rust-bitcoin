@@ -414,7 +414,7 @@ impl Witness {
     /// This does not guarantee that this represents a P2TR [`Witness`]. It
     /// merely gets the last or second to last element depending on the first
     /// byte of the last element being equal to 0x50. See
-    /// [Script::is_p2tr](crate::blockdata::script::Script::is_p2tr) to
+    /// [Script::is_v1_p2tr](crate::blockdata::script::Script::is_v1_p2tr) to
     /// check whether this is actually a Taproot witness.
     pub fn taproot_control_block(&self) -> Option<&[u8]> {
         self.last().and_then(|last| {
@@ -435,7 +435,7 @@ impl Witness {
     /// Get the taproot annex following BIP341 rules.
     ///
     /// This does not guarantee that this represents a P2TR [`Witness`]. See
-    /// [Script::is_p2tr](crate::blockdata::script::Script::is_p2tr) to
+    /// [Script::is_v1_p2tr](crate::blockdata::script::Script::is_v1_p2tr) to
     /// check whether this is actually a Taproot witness.
     pub fn taproot_annex(&self) -> Option<&[u8]> {
         self.last().and_then(|last| {

@@ -13,6 +13,7 @@ use core::{cmp, convert, fmt};
 #[cfg(all(test, mutate))]
 use mutagen::mutate;
 
+use crate::transaction::Sequence;
 #[cfg(doc)]
 use crate::relative;
 use crate::Sequence;
@@ -160,6 +161,23 @@ impl LockTime {
     /// Returns true if this lock time value is in units of time.
     #[inline]
     pub const fn is_block_time(&self) -> bool { !self.is_block_height() }
+
+    /// Try to interpret the given number as a relative lock time.
+    #[inline]
+    pub fn from_num(num: i64) -> Option<LockTime> {
+        let int = u32::try_from(num).ok()?;
+
+        if int & Sequence::LOCK_TIME_DISABLE_FLAG_MASK != 0 {
+            return None;
+        }
+
+        let low16 = int as u16; // only need lowest 16 bits
+        if int & Sequence::LOCK_TYPE_MASK > 0 {
+            Some(LockTime::from(Time::from_512_second_intervals(low16)))
+        } else {
+            Some(LockTime::from(Height::from(low16)))
+        }
+    }
 
     /// Returns true if this [`relative::LockTime`] is satisfied by either height or time.
     ///
