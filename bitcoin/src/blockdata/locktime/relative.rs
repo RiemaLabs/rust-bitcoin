@@ -16,7 +16,6 @@ use mutagen::mutate;
 use crate::transaction::Sequence;
 #[cfg(doc)]
 use crate::relative;
-use crate::Sequence;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
 #[doc(inline)]
